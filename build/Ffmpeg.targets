@@ -1,0 +1,109 @@
+<Project>
+
+  <!--
+    Empaquetado de FFmpeg.
+
+    Decision de arquitectura: FFmpeg viaja junto a la aplicacion, para que no dependa del
+    PATH de la maquina destino. Los binarios NO se versionan (pesan cientos de megas y
+    GitHub rechaza archivos de mas de 100 MB), asi que se resuelven al compilar.
+
+    Orden de resolucion:
+      1. -p:FfmpegDir=<carpeta>  o la variable de entorno FFMPEG_DIR
+      2. La cache local del repositorio (.tools/ffmpeg/<version>)
+      3. Una instalacion del sistema (C:\ffmpeg\bin o C:\Program Files\ffmpeg\bin)
+      4. Descarga verificada por checksum, una sola vez, a la cache
+
+    Para desactivar la descarga:  -p:DescargarFfmpeg=false
+  -->
+
+  <PropertyGroup>
+    <!-- Version fijada a proposito: una URL "latest" no se puede verificar por checksum. -->
+    <FfmpegVersion>9.0.2</FfmpegVersion>
+    <FfmpegUrl>https://github.com/GyanD/codexffmpeg/releases/download/$(FfmpegVersion)/ffmpeg-$(FfmpegVersion)-essentials_build.zip</FfmpegUrl>
+    <FfmpegSha256>60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba</FfmpegSha256>
+
+    <FfmpegCacheDir>$(MSBuildThisFileDirectory)..\.tools\ffmpeg\$(FfmpegVersion)\</FfmpegCacheDir>
+    <DescargarFfmpeg Condition="'$(DescargarFfmpeg)' == ''">true</DescargarFfmpeg>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FfmpegDir Condition="'$(FfmpegDir)' == ''">$(FFMPEG_DIR)</FfmpegDir>
+    <FfmpegDir Condition="'$(FfmpegDir)' == '' AND Exists('$(FfmpegCacheDir)ffmpeg.exe')">$(FfmpegCacheDir)</FfmpegDir>
+    <FfmpegDir Condition="'$(FfmpegDir)' == '' AND Exists('C:\ffmpeg\bin\ffmpeg.exe')">C:\ffmpeg\bin</FfmpegDir>
+    <FfmpegDir Condition="'$(FfmpegDir)' == '' AND Exists('C:\Program Files\ffmpeg\bin\ffmpeg.exe')">C:\Program Files\ffmpeg\bin</FfmpegDir>
+  </PropertyGroup>
+
+  <Target Name="ObtenerFfmpeg"
+          Condition="'$(FfmpegDir)' == '' AND '$(DescargarFfmpeg)' == 'true'">
+
+    <Message Importance="high"
+             Text="FFmpeg no esta en esta maquina. Descargando $(FfmpegVersion) (~110 MB). Se hace una sola vez: queda en $(FfmpegCacheDir)" />
+
+    <MakeDir Directories="$(FfmpegCacheDir)" />
+
+    <DownloadFile SourceUrl="$(FfmpegUrl)"
+                  DestinationFolder="$(FfmpegCacheDir)"
+                  DestinationFileName="ffmpeg.zip"
+                  Retries="2" />
+
+    <!--
+      Verificacion obligatoria: el build descarga un binario de un tercero y lo mete en el
+      producto. Sin comparar el hash, cualquier cambio en origen entraria sin que nadie
+      se entere.
+    -->
+    <GetFileHash Files="$(FfmpegCacheDir)ffmpeg.zip" Algorithm="SHA256">
+      <Output TaskParameter="Hash" PropertyName="FfmpegHashObtenido" />
+    </GetFileHash>
+
+    <Delete Files="$(FfmpegCacheDir)ffmpeg.zip" Condition="'$(FfmpegHashObtenido)' != '$(FfmpegSha256)'" />
+
+    <Error Condition="'$(FfmpegHashObtenido)' != '$(FfmpegSha256)'"
+           Text="El archivo descargado de FFmpeg no coincide con el checksum esperado. Esperado: $(FfmpegSha256). Obtenido: $(FfmpegHashObtenido). No se usa: revisa la fuente antes de continuar." />
+
+    <Unzip SourceFiles="$(FfmpegCacheDir)ffmpeg.zip" DestinationFolder="$(FfmpegCacheDir)extraido" />
+
+    <!-- El zip trae los exe bajo <nombre-del-build>/bin/, por eso el comodin. -->
+    <ItemGroup>
+      <FfmpegExtraido Include="$(FfmpegCacheDir)extraido\**\bin\ffmpeg.exe" />
+      <FfmpegExtraido Include="$(FfmpegCacheDir)extraido\**\bin\ffprobe.exe" />
+    </ItemGroup>
+
+    <Error Condition="'@(FfmpegExtraido)' == ''"
+           Text="El zip de FFmpeg no contiene ffmpeg.exe ni ffprobe.exe donde se esperaba." />
+
+    <Copy SourceFiles="@(FfmpegExtraido)" DestinationFolder="$(FfmpegCacheDir)" />
+
+    <RemoveDir Directories="$(FfmpegCacheDir)extraido" />
+    <Delete Files="$(FfmpegCacheDir)ffmpeg.zip" />
+
+    <PropertyGroup>
+      <FfmpegDir>$(FfmpegCacheDir)</FfmpegDir>
+    </PropertyGroup>
+  </Target>
+
+  <!--
+    La copia se hace con tareas y no con items de CopyToOutputDirectory porque los items
+    se evaluan ANTES de que corra ningun target: cuando FFmpeg se descarga durante la
+    compilacion, todavia no existe en el momento de la evaluacion.
+  -->
+  <Target Name="ResolverFfmpeg" DependsOnTargets="ObtenerFfmpeg">
+    <ItemGroup Condition="'$(FfmpegDir)' != ''">
+      <BinariosFfmpeg Include="$([MSBuild]::EnsureTrailingSlash('$(FfmpegDir)'))ffmpeg.exe" />
+      <BinariosFfmpeg Include="$([MSBuild]::EnsureTrailingSlash('$(FfmpegDir)'))ffprobe.exe" />
+    </ItemGroup>
+
+    <Warning Condition="'$(FfmpegDir)' == ''"
+             Text="FFmpeg no se empaqueto: la aplicacion dependera del PATH de la maquina destino. Indicalo con -p:FfmpegDir=&lt;carpeta&gt; o quita -p:DescargarFfmpeg=false." />
+  </Target>
+
+  <Target Name="CopiarFfmpegASalida" AfterTargets="Build" DependsOnTargets="ResolverFfmpeg">
+    <Copy SourceFiles="@(BinariosFfmpeg)" DestinationFolder="$(OutDir)"
+          SkipUnchangedFiles="true" Condition="'@(BinariosFfmpeg)' != ''" />
+  </Target>
+
+  <Target Name="CopiarFfmpegAPublicacion" AfterTargets="Publish" DependsOnTargets="ResolverFfmpeg">
+    <Copy SourceFiles="@(BinariosFfmpeg)" DestinationFolder="$(PublishDir)"
+          SkipUnchangedFiles="true" Condition="'@(BinariosFfmpeg)' != ''" />
+  </Target>
+
+</Project>
