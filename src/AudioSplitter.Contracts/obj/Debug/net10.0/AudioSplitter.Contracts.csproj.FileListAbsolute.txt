@@ -1,0 +1,11 @@
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\bin\Debug\net10.0\AudioSplitter.Contracts.deps.json
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\bin\Debug\net10.0\AudioSplitter.Contracts.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\bin\Debug\net10.0\AudioSplitter.Contracts.pdb
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.AssemblyInfoInputs.cache
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.AssemblyInfo.cs
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.csproj.CoreCompileInputs.cache
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\refint\AudioSplitter.Contracts.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\AudioSplitter.Contracts.pdb
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Contracts\obj\Debug\net10.0\ref\AudioSplitter.Contracts.dll

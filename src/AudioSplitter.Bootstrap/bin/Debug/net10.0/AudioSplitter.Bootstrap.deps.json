@@ -1,0 +1,73 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AudioSplitter.Bootstrap/1.0.0": {
+        "dependencies": {
+          "AudioSplitter.Contracts": "1.0.0",
+          "AudioSplitter.Core": "1.0.0",
+          "AudioSplitter.Domain": "1.0.0"
+        },
+        "runtime": {
+          "AudioSplitter.Bootstrap.dll": {}
+        }
+      },
+      "AudioSplitter.Contracts/1.0.0": {
+        "runtime": {
+          "AudioSplitter.Contracts.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AudioSplitter.Core/1.0.0": {
+        "dependencies": {
+          "AudioSplitter.Contracts": "1.0.0"
+        },
+        "runtime": {
+          "AudioSplitter.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AudioSplitter.Domain/1.0.0": {
+        "dependencies": {
+          "AudioSplitter.Contracts": "1.0.0"
+        },
+        "runtime": {
+          "AudioSplitter.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AudioSplitter.Bootstrap/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AudioSplitter.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AudioSplitter.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AudioSplitter.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

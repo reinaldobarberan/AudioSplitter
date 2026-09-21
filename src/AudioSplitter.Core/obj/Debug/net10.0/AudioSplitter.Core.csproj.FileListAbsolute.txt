@@ -1,0 +1,15 @@
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\bin\Debug\net10.0\AudioSplitter.Core.deps.json
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\bin\Debug\net10.0\AudioSplitter.Core.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\bin\Debug\net10.0\AudioSplitter.Core.pdb
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\bin\Debug\net10.0\AudioSplitter.Contracts.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\bin\Debug\net10.0\AudioSplitter.Contracts.pdb
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.csproj.AssemblyReference.cache
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.AssemblyInfoInputs.cache
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.AssemblyInfo.cs
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.csproj.CoreCompileInputs.cache
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSpl.2C91F61D.Up2Date
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\refint\AudioSplitter.Core.dll
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\AudioSplitter.Core.pdb
+C:\MIs Archivos\Agente\Video editor\src\AudioSplitter.Core\obj\Debug\net10.0\ref\AudioSplitter.Core.dll
