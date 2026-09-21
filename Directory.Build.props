@@ -1,0 +1,15 @@
+<Project>
+
+  <!--
+    Propiedades comunes a todos los proyectos de la solucion.
+    MSBuild importa este archivo automaticamente en cada .csproj por debajo de esta carpeta.
+  -->
+  <PropertyGroup>
+    <!--
+      Sin simbolos de depuracion en Release. Va aca y no en cada csproj porque los .pdb
+      de los proyectos REFERENCIADOS tambien llegan a la carpeta de publicacion.
+    -->
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+  </PropertyGroup>
+
+</Project>

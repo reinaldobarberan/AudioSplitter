@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AudioSplitter.Bootstrap/AudioSplitter.Bootstrap.csproj" />
+    <Project Path="src/AudioSplitter.Contracts/AudioSplitter.Contracts.csproj" />
+    <Project Path="src/AudioSplitter.Core/AudioSplitter.Core.csproj" />
+    <Project Path="src/AudioSplitter.Domain/AudioSplitter.Domain.csproj" />
+    <Project Path="src/AudioSplitter.UI/AudioSplitter.UI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AudioSplitter.Domain.Tests/AudioSplitter.Domain.Tests.csproj" />
+    <Project Path="tests/AudioSplitter.Integracion.Tests/AudioSplitter.Integracion.Tests.csproj" />
+  </Folder>
+</Solution>
