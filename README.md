@@ -45,6 +45,33 @@ Un test puntual:
 dotnet test --filter "FullyQualifiedName~EjemploDelDocumento"
 ```
 
+## Distribución
+
+Para llevar la aplicación a otra máquina, que puede no tener .NET ni FFmpeg instalados:
+
+```bash
+dotnet publish src/AudioSplitter.UI -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist
+```
+
+La carpeta `dist/` queda con tres archivos y **no necesita nada instalado en el destino**:
+
+```
+dist/
+  AudioSplitter.UI.exe    la aplicación y el runtime de .NET
+  ffmpeg.exe
+  ffprobe.exe
+```
+
+- FFmpeg se copia desde la máquina que compila. Si no está en `C:\ffmpeg\bin` ni en
+  `C:\Program Files\ffmpeg\bin`, indicá la carpeta con
+  `-p:FfmpegDir="D:\ruta\a\ffmpeg\bin"` o con la variable `FFMPEG_DIR`.
+  Si no se encuentra, la compilación avisa y la aplicación queda dependiendo del `PATH`.
+- El tamaño depende del build de FFmpeg que uses. Los builds *full* pesan mucho más que
+  los *essentials*; si el paquete te queda grande, ese es el primer lugar donde mirar.
+
+> **Antes de distribuir**: los builds completos de FFmpeg suelen ser GPL. Distribuir los
+> binarios junto a la aplicación arrastra obligaciones de licencia. Revisalo.
+
 ## Arquitectura
 
 Cuatro capas con dependencias en una sola dirección, más una raíz de composición.
@@ -118,8 +145,6 @@ Solo se limpia lo temporal.
 
 ## Pendiente
 
-- Empaquetar `ffmpeg.exe` y `ffprobe.exe` junto a la aplicación. Hoy se resuelven por `PATH`,
-  que funciona en desarrollo pero no en la máquina de un usuario.
 - **Revisar la licencia de FFmpeg antes de distribuir.** Los builds completos suelen ser GPL,
   y eso condiciona cómo puede publicarse la aplicación. No hay licencia definida para este
   proyecto todavía.

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <!-- Empotrados en el ensamblado: viajan con el .exe, sin archivos sueltos al lado. -->
@@ -24,6 +24,40 @@
     <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
     <!-- Icono del ejecutable: lo que ve el usuario en el explorador y la barra de tareas. -->
     <ApplicationIcon>Recursos\icono.ico</ApplicationIcon>
+    <!-- Sin simbolos de depuracion en Release: no aportan nada al usuario final. -->
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
   </PropertyGroup>
+
+  <!--
+    Empaquetado de FFmpeg. Decision de arquitectura: viaja junto a la aplicacion, para que
+    no dependa del PATH de la maquina destino.
+
+    Los binarios NO se versionan en el repositorio: se copian desde la maquina que compila.
+    Para fijar la carpeta explicitamente:
+        dotnet publish -p:FfmpegDir="D:\ruta\a\ffmpeg\bin"
+    o exportando la variable de entorno FFMPEG_DIR.
+  -->
+  <PropertyGroup>
+    <FfmpegDir Condition="'$(FfmpegDir)' == ''">$(FFMPEG_DIR)</FfmpegDir>
+    <FfmpegDir Condition="'$(FfmpegDir)' == '' AND Exists('C:\ffmpeg\bin\ffmpeg.exe')">C:\ffmpeg\bin</FfmpegDir>
+    <FfmpegDir Condition="'$(FfmpegDir)' == '' AND Exists('C:\Program Files\ffmpeg\bin\ffmpeg.exe')">C:\Program Files\ffmpeg\bin</FfmpegDir>
+  </PropertyGroup>
+
+  <!--
+    Como items (y no como una tarea Copy suelta) para que MSBuild los lleve tanto a la
+    carpeta de compilacion como a la de publicacion. Link los deja en la raiz, que es
+    el primer lugar donde LocalizadorFfmpeg busca.
+  -->
+  <ItemGroup Condition="'$(FfmpegDir)' != ''">
+    <None Include="$(FfmpegDir)\ffmpeg.exe" Link="ffmpeg.exe"
+          CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="$(FfmpegDir)\ffprobe.exe" Link="ffprobe.exe"
+          CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="AvisarFfmpegAusente" BeforeTargets="Build" Condition="'$(FfmpegDir)' == ''">
+    <!-- Sin binarios la app compila igual y cae al PATH, pero el aviso lo deja explicito. -->
+    <Warning Text="No se encontro FFmpeg para empaquetar: la aplicacion dependera del PATH de la maquina destino. Indicalo con -p:FfmpegDir=&lt;carpeta&gt; o la variable FFMPEG_DIR." />
+  </Target>
 
 </Project>
